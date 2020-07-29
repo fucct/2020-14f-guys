@@ -35,3 +35,4 @@ out/
 /peloton-frontend/node_modules/
 /peloton-frontend/.expo/packager-info.json
 
+/logs/
