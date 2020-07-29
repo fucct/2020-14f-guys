@@ -38,7 +38,7 @@ public class Member {
     private final Long kakaoId;
 
     @Embedded(prefix = "PROFILE_", onEmpty = Embedded.OnEmpty.USE_EMPTY)
-    @JsonProperty("profile") @Valid
+    @JsonProperty("profile")
     private final ImageUrl profile;
 
     @NotBlank
