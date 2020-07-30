@@ -94,6 +94,7 @@ public class KakaoAPIService implements LoginService {
         final Mono<KakaoUserResponse> kakaoUserResponse = fetchKakaoUserInfo(
             Objects.requireNonNull(kakaoTokenResponse.block()));
         MemberResponse memberResponse = memberService.retrieve(Objects.requireNonNull(kakaoUserResponse.block()));
+
         return JwtTokenResponse.of(tokenProvider.createToken(memberResponse.getKakaoId().toString()));
     }
 
