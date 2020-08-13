@@ -50,8 +50,8 @@ const RedirectPage = ({ route }) => {
     }
     try {
       await MemberApi.patchCash(token, String(userCash - raceEntranceFee));
-      const response = await MemberApi.get(token);
-      setUserInfo(response);
+      const newMemberInfo = await MemberApi.get(token);
+      setUserInfo(newMemberInfo);
       navigateWithHistory(navigation, [
         {
           name: "Home",
