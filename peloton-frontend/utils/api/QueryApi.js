@@ -12,7 +12,7 @@ export const QueryApi = {
           Authorization: `Bearer ${token}`,
         },
       });
-      return response.data.raceResponses;
+      return response.data;
     } catch (error) {
       console.log(error);
     }
