@@ -9,7 +9,11 @@ import { COLOR } from "../../../utils/constants";
 import { loadingState } from "../../../state/loading/LoadingState";
 import LoadingIndicator from "../../../utils/LoadingIndicator";
 import RaceCreateView from "./RaceCreateView";
-import { navigateTabScreen, navigateWithHistory } from "../../../utils/util";
+import {
+  navigateTabScreen,
+  navigateWithHistory,
+  navigateWithoutHistory,
+} from "../../../utils/util";
 import { memberInfoState, memberTokenState } from "../../../state/member/MemberState";
 import { RaceApi } from "../../../utils/api/RaceApi";
 import { MemberApi } from "../../../utils/api/MemberApi";
@@ -64,6 +68,7 @@ const InputRaceFee = () => {
   };
 
   const submitRaceRequest = async () => {
+    setGlobalLoading(true);
     const userCash = Number(memberInfo.cash);
 
     if (!entrance_fee) {
@@ -74,7 +79,6 @@ const InputRaceFee = () => {
       alert("입장료는 음수가 될 수 없습니다.");
       return;
     }
-
     if (userCash < entrance_fee) {
       Alert.alert(
         "잔액이 부족합니다.",
@@ -97,13 +101,18 @@ const InputRaceFee = () => {
       return;
     }
     try {
-      await MemberApi.patchCash(token, String(userCash - entrance_fee));
-      const newMemberInfo = await MemberApi.get(token);
-      setMemberInfo(newMemberInfo);
       await createRaceRequest();
     } catch (e) {
       console.log(e);
+      alert("서버 에러");
+      navigateWithoutHistory(navigation, "Home");
+      setGlobalLoading(false);
+      return;
     }
+    await MemberApi.patchCash(token, String(userCash - entrance_fee));
+    const newMemberInfo = await MemberApi.get(token);
+    setMemberInfo(newMemberInfo);
+    setGlobalLoading(false);
   };
 
   return (

@@ -20,13 +20,13 @@ import { RiderApi } from "../../../utils/api/RiderApi";
 const RedirectPage = ({ route }) => {
   const setLoadingState = useSetRecoilState(loadingState);
   const [token, setToken] = useRecoilState(memberTokenState);
-  const [userInfo, setUserInfo] = useRecoilState(memberInfoState);
+  const [memberInfo, setMemberInfo] = useRecoilState(memberInfoState);
   const [raceInfo, setRaceInfo] = useRecoilState(raceInfoState);
   const navigation = useNavigation();
 
   const joinRace = async () => {
     setLoadingState(true);
-    const userCash = Number(userInfo.cash);
+    const userCash = Number(memberInfo.cash);
     const raceEntranceFee = Number(raceInfo.entrance_fee);
     if (userCash < raceEntranceFee) {
       Alert.alert(
@@ -54,7 +54,7 @@ const RedirectPage = ({ route }) => {
       await MemberApi.patchCash(token, String(userCash - raceEntranceFee));
       await RiderApi.post(token, raceInfo.id);
       const newMemberInfo = await MemberApi.get(token);
-      setUserInfo(newMemberInfo);
+      setMemberInfo(newMemberInfo);
       navigateWithHistory(navigation, [
         {
           name: "Home",
@@ -93,8 +93,8 @@ const RedirectPage = ({ route }) => {
         return;
       }
       try {
-        const newUserInfo = await MemberApi.get(userToken);
-        setUserInfo(newUserInfo);
+        const newMemberInfo = await MemberApi.get(userToken);
+        setMemberInfo(newMemberInfo);
       } catch (error) {
         alert("사용자 정보를 찾을 수 없습니다. 다시 로그인 해주세요.");
         navigateWithoutHistory(navigation, "Login");
@@ -106,27 +106,22 @@ const RedirectPage = ({ route }) => {
         alert("올바르지 않은 경로입니다.");
         navigateWithoutHistory(navigation, "Home");
       }
-      try {
-        const races = await QueryApi.getRaces(userToken);
-        for (let i = 0; i < races.length; i++) {
-          if (String(races[i].id) === raceId) {
-            navigateWithHistory(navigation, [
-              {
-                name: "Home",
+      const races = await QueryApi.getRaces(userToken);
+      for (let i = 0; i < races.length; i++) {
+        if (String(races[i].id) === raceId) {
+          navigateWithHistory(navigation, [
+            {
+              name: "Home",
+            },
+            {
+              name: "RaceDetail",
+              params: {
+                raceInfo,
+                location: `/api/races/${raceId}`,
               },
-              {
-                name: "RaceDetail",
-                params: {
-                  raceInfo,
-                  location: `/api/races/${raceId}`,
-                },
-              },
-            ]);
-          }
+            },
+          ]);
         }
-      } catch (error) {
-        alert("서버 에러");
-        navigateWithoutHistory(navigation, "Home");
       }
     };
     fetchRaceInfo();
@@ -142,7 +137,7 @@ const RedirectPage = ({ route }) => {
         <Text style={styles.raceDescription}>
           레이스 설명 : {raceInfo.description}
         </Text>
-        <Text style={styles.raceDescription}>잔액 : {userInfo.cash}</Text>
+        <Text style={styles.raceDescription}>잔액 : {memberInfo.cash}</Text>
         <Text style={styles.entranceFee}>
           {raceInfo.entrance_fee}원이 차감됩니다
         </Text>

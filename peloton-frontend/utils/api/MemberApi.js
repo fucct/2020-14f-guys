@@ -20,7 +20,7 @@ export const MemberApi = {
         formData,
         {
           headers: {
-            "Content-Type": "multipart/form-data",
+            ContentType: "multipart/form-data",
             Authorization: `Bearer ${token}`,
           },
         },
@@ -63,5 +63,15 @@ export const MemberApi = {
     } catch (error) {
       console.log(error);
     }
+  },
+  delete: async (token) => {
+    await Axios({
+      method: "DELETE",
+      baseURL: SERVER_BASE_URL,
+      url: "/api/members",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
   },
 };

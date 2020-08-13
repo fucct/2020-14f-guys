@@ -1,10 +1,5 @@
 import React from "react";
-import {
-  Keyboard,
-  StyleSheet,
-  TouchableWithoutFeedback,
-  View,
-} from "react-native";
+import { Keyboard, StyleSheet, TouchableWithoutFeedback, View } from "react-native";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 import SubmitButton from "../../login/SubmitButton";
 import { COLOR } from "../../../utils/constants";

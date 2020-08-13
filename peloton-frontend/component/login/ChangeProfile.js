@@ -22,7 +22,7 @@ import { MemberApi } from "../../utils/api/MemberApi";
 
 const ChangeProfile = () => {
   const token = useRecoilValue(memberTokenState);
-  const [userInfo, setUserInfo] = useRecoilState(memberInfoState);
+  const [memberInfo, setMemberInfo] = useRecoilState(memberInfoState);
   const navigation = useNavigation();
   const [userInput, setUserInput] = useState("");
   const setIsLoading = useSetRecoilState(loadingState);
@@ -33,8 +33,8 @@ const ChangeProfile = () => {
     await AsyncStorage.setItem(TOKEN_STORAGE, token);
     try {
       await MemberApi.patchName(token, name);
-      setUserInfo({
-        ...userInfo,
+      setMemberInfo({
+        ...memberInfo,
         name: userInput,
       });
       navigateWithoutHistory(navigation, "ApplicationNavigationRoot");

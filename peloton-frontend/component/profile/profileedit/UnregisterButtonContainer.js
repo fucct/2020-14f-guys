@@ -1,21 +1,18 @@
 import React from "react";
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import Axios from "axios";
-import { COLOR, SERVER_BASE_URL } from "../../../utils/constants";
+import { COLOR } from "../../../utils/constants";
 import { useRecoilValue } from "recoil";
 import { memberTokenState } from "../../../state/member/MemberState";
+import { MemberApi } from "../../../utils/api/MemberApi";
 
 const UnregisterButtonContainer = ({ navigation }) => {
   const token = useRecoilValue(memberTokenState);
 
-  const requestUnregister = () => {
-    Axios.delete(`${SERVER_BASE_URL}/api/members`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+  const requestUnregister = async () => {
+    await MemberApi.delete(token);
     navigation.navigate("Home");
   };
+
   const createTwoButtonAlert = () =>
     Alert.alert(
       "Unregister",
@@ -28,7 +25,7 @@ const UnregisterButtonContainer = ({ navigation }) => {
         },
         { text: "Yes", onPress: requestUnregister },
       ],
-      { cancelable: false }
+      { cancelable: false },
     );
 
   return (

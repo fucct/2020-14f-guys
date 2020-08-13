@@ -1,11 +1,6 @@
 import React from "react";
 import { Platform, StyleSheet } from "react-native";
-import {
-  AnimatedImage,
-  AnimatedText,
-  AnimatedView,
-  COLOR,
-} from "../../utils/constants";
+import { AnimatedImage, AnimatedText, AnimatedView, COLOR } from "../../utils/constants";
 import { useSpring } from "react-spring";
 
 const LoginTitle = ({ resetAnimation }) => {
