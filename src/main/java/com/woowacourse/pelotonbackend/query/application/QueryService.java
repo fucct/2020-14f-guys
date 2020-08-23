@@ -142,7 +142,7 @@ public class QueryService {
         final List<Certification> certifications = missions.stream()
             .map(Mission::getId)
             .collect(Collectors.collectingAndThen(Collectors.toList(),
-                list -> certificationRepository.findByMissionIdsAndStatus(list, CertificationStatus.SUCCESS, PageRequest.of(0, Integer.MAX_VALUE))
+                list -> certificationRepository.findByMissionIdsAndStatus(list, CertificationStatus.SUCCESS.toString(), PageRequest.of(0, Integer.MAX_VALUE))
                     .getContent()));
         final List<Member> members = riders.stream()
             .map(rider -> rider.getMemberId().getId())
