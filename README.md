@@ -59,5 +59,5 @@
 
 ## 사용 예시
 
-![peloton](./image/peloton.gif)
+![peloton](./peloton.gif)
 
